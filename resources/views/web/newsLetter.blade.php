@@ -1,0 +1,1 @@
+<p>Thanks For Subscribing our NewsLetter.</p>

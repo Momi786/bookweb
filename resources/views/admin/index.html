@@ -1,0 +1,623 @@
+<!-- <!DOCTYPE html>
+<html>
+  <head>
+    <title>Event Click LatLng</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <style>
+        #map {
+  height: 100%;
+}
+/* Optional: Makes the sample page fill the window. */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+    </style>
+  </head>
+  <body>
+    
+<form action="/instant-quote-test/#wpcf7-f3686-p3924-o1" method="post" class="wpcf7-form mailchimp-ext-0.5.14" novalidate="novalidate">
+   <div>
+    <input type="text" name="street-address" size="40" id="address" aria-required="true" aria-invalid="false" placeholder="Street Address"  class="address5"/>
+    <input type="text" class="lati5">
+    <input type="text" class="logi5">
+  </div>
+  <div>
+    <input type="text" class="address5">
+    <input type="text" class="lati5">
+    <input type="text" class="logi5">
+  </div>
+    <a href="#" id="find-address" title="Find Address" class="button">Find Address</a>
+
+</form> -->
+<!-- Replace the value of the key parameter with your own API key. -->
+
+
+    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+  <!-- </body>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBzmny5oFybXLVH1oPi7wlk4SoDDpzjMPY" async></script>
+
+  <script src="../../../public/admin/assets/plugins/jquery/jquery-3.4.1.min.js"></script>
+<script>
+    var apiKey = 'AIzaSyBzmny5oFybXLVH1oPi7wlk4SoDDpzjMPY';
+    var longitude, latitude, map;
+
+    jQuery(document).ready(function($) {
+    $('.address5').change(function() {
+        var daataa = $(this);
+        var address = $(this).val();
+        var addressClean = address.replace(/\s+/g, '+');
+        var apiCall = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + addressClean + '&key=' + apiKey + '';
+
+        //$.getJSON(apiCall,function (data, textStatus) {
+        var geocoder = new google.maps.Geocoder();
+        geocoder.geocode({
+        address: addressClean 
+        }, function(results, status) {
+        console.log(status);
+        if (status == 'OK') {
+
+            console.log(results);
+            longitude = results[0].geometry.location.lng();
+            latitude = results[0].geometry.location.lat();
+            console.log(longitude);
+            console.log(latitude);
+            $(daataa).parent().find(".lati5").val(latitude);
+            $(daataa).parent().find(".logi5").val(longitude);
+        } else alert("geocode failed")
+        });
+    });
+    })
+</script>
+</html> -->
+<!-- 
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBzmny5oFybXLVH1oPi7wlk4SoDDpzjMPY&amp;libraries=places" async></script>
+
+</head>
+<body>
+
+	<div class="flex justify-center p-8">
+   <div class="max-w-sm bg-white shadow-lg rounded overflow-hidden">
+      <div class="w-full relative" id="js-preview-map"><img src="https://maps.googleapis.com/maps/api/staticmap?key=AIzaSyBzmny5oFybXLVH1oPi7wlk4SoDDpzjMPY&amp;center=52.5219216,13.4110207&amp;zoom=12&amp;size=480x125&amp;maptype=roadmap&amp;sensor=false" width="480" height="125" alt="Google Maps Berlin" /></div>
+      <div class="w-full float-left border-b-2 border-gray-400 px-6 py-4"><label class="block text-gray-700 text-sm w-full font-semibold mb-2">Address:</label><input class="w-full bg-gray-200 text-gray-700 appearance-none rounded border-2 border-gray-300 py-2 px-4" type="text" id="address" /></div>
+      <pre class="w-full bg-gray-200 text-blue-900 float-left px-6 py-4"><code id="js-preview-json"></code></pre>
+   </div>
+</div>
+
+
+</body>
+
+<script type="text/javascript">
+	// Prepare location info object.
+var locationInfo = {
+  geo: null,
+  country: null,
+  state: null,
+  city: null,
+  postalCode: null,
+  street: null,
+  streetNumber: null,
+  reset: function() {
+    this.geo = null;
+    this.country = null;
+    this.state = null;
+    this.city = null;
+    this.postalCode = null;
+    this.street = null;
+    this.streetNumber = null;
+  }
+};
+
+googleAutocomplete = {
+  autocompleteField: function(fieldId) {
+    (autocomplete = new google.maps.places.Autocomplete(
+      document.getElementById(fieldId)
+    )),
+      { types: ["geocode"] };
+    google.maps.event.addListener(autocomplete, "place_changed", function() {
+      // Segment results into usable parts.
+      var place = autocomplete.getPlace(),
+        address = place.address_components,
+        lat = place.geometry.location.lat(),
+        lng = place.geometry.location.lng();
+
+      // Reset location object.
+      locationInfo.reset();
+
+      // Save the individual address components.
+      locationInfo.geo = [lat, lng];
+      for (var i = 0; i < address.length; i++) {
+        var component = address[i].types[0];
+        switch (component) {
+          case "country":
+            locationInfo.country = address[i]["long_name"];
+            break;
+          case "administrative_area_level_1":
+            locationInfo.state = address[i]["long_name"];
+            break;
+          case "locality":
+            locationInfo.city = address[i]["long_name"];
+            break;
+          case "postal_code":
+            locationInfo.postalCode = address[i]["long_name"];
+            break;
+          case "route":
+            locationInfo.street = address[i]["long_name"];
+            break;
+          case "street_number":
+            locationInfo.streetNumber = address[i]["long_name"];
+            break;
+          default:
+            break;
+        }
+      }
+
+      // Preview map.
+      var src =
+          "https://maps.googleapis.com/maps/api/staticmap?key=AIzaSyBzmny5oFybXLVH1oPi7wlk4SoDDpzjMPY" +
+          lat +
+          "," +
+          lng +
+          "&zoom=14&size=480x125&maptype=roadmap&sensor=false",
+        img = document.createElement("img");
+
+      img.src = src;
+      img.className = "absolute top-0 left-0 z-20";
+      document.getElementById("js-preview-map").appendChild(img);
+
+      // Preview JSON output.
+      document.getElementById("js-preview-json").innerHTML = JSON.stringify(
+        locationInfo,
+        null,
+        4
+      );
+    });
+  }
+};
+
+// Attach listener to address input field.
+googleAutocomplete.autocompleteField("address");
+</script>
+</html> -->
+<!-- 
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Places Search Box</title>
+  </head>
+  <body>
+    <input    
+      id="pac-input"
+      class="controls"
+      type="text"
+      placeholder="Search Box"
+    />
+    <div id="map"></div> -->
+
+    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+<!--     
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <style type="text/css">
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+        display: none;
+      }
+
+      /* Optional: Makes the sample page fill the window. */
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      #description {
+        font-family: Roboto;
+        font-size: 15px;
+        font-weight: 300;
+      }
+
+      #infowindow-content .title {
+        font-weight: bold;
+      }
+
+      #infowindow-content {
+        display: none;
+      }
+
+      #map #infowindow-content {
+        display: inline;
+      }
+
+      .pac-card {
+        margin: 10px 10px 0 0;
+        border-radius: 2px 0 0 2px;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        outline: none;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        background-color: #fff;
+        font-family: Roboto;
+      }
+
+      #pac-container {
+        padding-bottom: 12px;
+        margin-right: 12px;
+      }
+
+      .pac-controls {
+        display: inline-block;
+        padding: 5px 11px;
+      }
+
+      .pac-controls label {
+        font-family: Roboto;
+        font-size: 13px;
+        font-weight: 300;
+      }
+
+      #pac-input {
+        background-color: #fff;
+        font-family: Roboto;
+        font-size: 15px;
+        font-weight: 300;
+        margin-left: 12px;
+        padding: 0 11px 0 13px;
+        text-overflow: ellipsis;
+        width: 400px;
+      }
+
+      #pac-input:focus {
+        border-color: #4d90fe;
+      }
+
+      #title {
+        color: #fff;
+        background-color: #4d90fe;
+        font-size: 25px;
+        font-weight: 500;
+        padding: 6px 12px;
+      }
+
+      #target {
+        width: 345px;
+      }
+    </style>
+    <script>
+      // This example adds a search box to a map, using the Google Place Autocomplete
+      // feature. People can enter geographical searches. The search box will return a
+      // pick list containing a mix of places and predicted search terms.
+      // This example requires the Places library. Include the libraries=places
+      // parameter when you first load the API. For example:
+      // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+      function initAutocomplete() {
+        const map = new google.maps.Map(document.getElementById("map"), {
+          center: { lat: -33.8688, lng: 151.2195 },
+          zoom: 13,
+          mapTypeId: "roadmap",
+        });
+        // Create the search box and link it to the UI element.
+        const input = document.getElementById("pac-input");
+        const searchBox = new google.maps.places.SearchBox(input);
+        map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+        // Bias the SearchBox results towards current map's viewport.
+        map.addListener("bounds_changed", () => {
+          searchBox.setBounds(map.getBounds());
+        });
+        let markers = [];
+        // Listen for the event fired when the user selects a prediction and retrieve
+        // more details for that place.
+        searchBox.addListener("places_changed", () => {
+          const places = searchBox.getPlaces();
+
+          if (places.length == 0) {
+            return;
+          }
+          // Clear out the old markers.
+          markers.forEach((marker) => {
+            marker.setMap(null);
+          });
+          markers = [];
+          // For each place, get the icon, name and location.
+          const bounds = new google.maps.LatLngBounds();
+          places.forEach((place) => {
+            if (!place.geometry || !place.geometry.location) {
+              console.log("Returned place contains no geometry");
+              return;
+            }
+            const icon = {
+              url: place.icon,
+              size: new google.maps.Size(71, 71),
+              origin: new google.maps.Point(0, 0),
+              anchor: new google.maps.Point(17, 34),
+              scaledSize: new google.maps.Size(25, 25),
+            };
+            // Create a marker for each place.
+            markers.push(
+              new google.maps.Marker({
+                map,
+                icon,
+                title: place.name,
+                position: place.geometry.location,
+              })
+            );
+
+            if (place.geometry.viewport) {
+              console.log(place.geometry.location.lng());
+              console.log(place.geometry.location.lat());
+              // Only geocodes have viewport.
+              bounds.union(place.geometry.viewport);
+            } else {
+              bounds.extend(place.geometry.location);
+            }
+          });
+          map.fitBounds(bounds);
+        });
+      }
+    </script>
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBzmny5oFybXLVH1oPi7wlk4SoDDpzjMPY&callback=initAutocomplete&libraries=places&v=weekly"
+      async
+    ></script>
+  </body>
+</html> -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Place Autocomplete Address Form</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:400,500"
+      rel="stylesheet"
+    />
+
+    <style type="text/css">
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+
+      /* Optional: Makes the sample page fill the window. */
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Roboto", sans-serif;
+        font-size: 18px;
+        color: #686868;
+      }
+
+      form {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        max-width: 400px;
+        padding: 20px;
+      }
+
+      input {
+        width: 100%;
+        height: 1.2rem;
+        margin-top: 0;
+        padding: 0.5em;
+        border: 0;
+        border-bottom: 2px solid gray;
+        font-family: "Roboto", sans-serif;
+        font-size: 18px;
+      }
+
+      input:focus {
+        border-bottom: 4px solid black;
+      }
+
+      input[type="reset"] {
+        width: auto;
+        height: auto;
+        border-bottom: 0;
+        background-color: transparent;
+        color: #686868;
+        font-size: 14px;
+      }
+
+      .title {
+        width: 100%;
+        margin-block-end: 0;
+        font-weight: 500;
+      }
+
+      .note {
+        width: 100%;
+        margin-block-start: 0;
+        font-size: 12px;
+      }
+
+      .form-label {
+        width: 100%;
+        padding: 0.5em;
+      }
+
+      .full-field {
+        flex: 400px;
+        margin: 15px 0;
+      }
+
+      .slim-field-left {
+        flex: 1 150px;
+        margin: 15px 15px 15px 0px;
+      }
+
+      .slim-field-right {
+        flex: 1 150px;
+        margin: 15px 0px 15px 15px;
+      }
+
+      .my-button {
+        background-color: #000;
+        border-radius: 6px;
+        color: #fff;
+        margin: 10px;
+        padding: 6px 24px;
+        text-decoration: none;
+      }
+
+      .my-button:hover {
+        background-color: #666;
+      }
+
+      .my-button:active {
+        position: relative;
+        top: 1px;
+      }
+    </style>
+    <script>
+      // This sample uses the Places Autocomplete widget to:
+      // 1. Help the user select a place
+      // 2. Retrieve the address components associated with that place
+      // 3. Populate the form fields with those address components.
+      // This sample requires the Places library, Maps JavaScript API.
+      // Include the libraries=places parameter when you first load the API.
+      // For example: <script
+      // src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+      let autocomplete;
+      let address1Field;
+      let address2Field;
+      let postalField;
+
+      function initAutocomplete() {
+        address1Field = document.querySelector("#ship-address");
+        address2Field = document.querySelector("#address2");
+        postalField = document.querySelector("#postcode");
+        // Create the autocomplete object, restricting the search predictions to
+        // addresses in the US and Canada.
+        autocomplete = new google.maps.places.Autocomplete(address1Field, {
+          componentRestrictions: { country: ["us", "ca"] },
+          fields: ["address_components", "geometry"],
+          types: ["address"],
+        });
+        address1Field.focus();
+        // When the user selects an address from the drop-down, populate the
+        // address fields in the form.
+        autocomplete.addListener("place_changed", fillInAddress);
+      }
+
+      function fillInAddress() {
+        // Get the place details from the autocomplete object.
+        const place = autocomplete.getPlace();
+        let address1 = "";
+        let postcode = "";
+
+        // Get each component of the address from the place details,
+        // and then fill-in the corresponding field on the form.
+        // place.address_components are google.maps.GeocoderAddressComponent objects
+        // which are documented at http://goo.gle/3l5i5Mr
+        for (const component of place.address_components) {
+          const componentType = component.types[0];
+
+          switch (componentType) {
+            case "street_number": {
+              address1 = `${component.long_name} ${address1}`;
+              break;
+            }
+
+            case "route": {
+              address1 += component.short_name;
+              break;
+            }
+
+            case "postal_code": {
+              postcode = `${component.long_name}${postcode}`;
+              break;
+            }
+
+            case "postal_code_suffix": {
+              postcode = `${postcode}-${component.long_name}`;
+              break;
+            }
+            case "locality":
+              document.querySelector("#locality").value = component.long_name;
+              break;
+
+            case "administrative_area_level_1": {
+              document.querySelector("#state").value = component.short_name;
+              break;
+            }
+            case "country":
+              document.querySelector("#country").value = component.long_name;
+              break;
+          }
+        }
+        address1Field.value = address1;
+        postalField.value = postcode;
+        // After filling the form with address components from the Autocomplete
+        // prediction, set cursor focus on the second address line to encourage
+        // entry of subpremise information such as apartment, unit, or floor number.
+        address2Field.focus();
+      }
+    </script>
+  </head>
+  <body>
+    <!-- Note: The address components in this sample are based on North American address format. You might need to adjust them for the locations relevant to your app. For more information, see
+https://developers.google.com/maps/documentation/javascript/examples/places-autocomplete-addressform
+    -->
+
+    <form id="address-form" action="" method="get" autocomplete="off">
+      <p class="title">Sample address form for North America</p>
+      <p class="note"><em>* = required field</em></p>
+      <label class="full-field">
+        <!-- Avoid the word "address" in id, name, or label text to avoid browser autofill from conflicting with Place Autocomplete. Star or comment bug https://crbug.com/587466 to request Chromium to honor autocomplete="off" attribute. -->
+        <span class="form-label">Deliver to*</span>
+        <input
+          id="ship-address"
+          name="ship-address"
+          required
+          autocomplete="off"
+        />
+      </label>
+      <label class="full-field">
+        <span class="form-label">Apartment, unit, suite, or floor #</span>
+        <input id="address2" name="address2" />
+      </label>
+      <label class="full-field">
+        <span class="form-label">City*</span>
+        <input id="locality" name="locality" required />
+      </label>
+      <label class="slim-field-left">
+        <span class="form-label">State/Province*</span>
+        <input id="state" name="state" required />
+      </label>
+      <label class="slim-field-right" for="postal_code">
+        <span class="form-label">Postal code*</span>
+        <input id="postcode" name="postcode" required />
+      </label>
+      <label class="full-field">
+        <span class="form-label">Country/Region*</span>
+        <input id="country" name="country" required />
+      </label>
+      <button type="button" class="my-button">Save address</button>
+
+      <!-- Reset button provided for development testing convenience.
+  Not recommended for user-facing forms due to risk of mis-click when aiming for Submit button. -->
+      <input type="reset" value="Clear form" />
+    </form>
+
+    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBzmny5oFybXLVH1oPi7wlk4SoDDpzjMPY&callback=initAutocomplete&libraries=places&v=weekly"
+      async
+    ></script>
+  </body>
+</html>
